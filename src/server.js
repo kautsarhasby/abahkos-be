@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import http from "http";
+import { roomRoute } from "./routes/room.js";
+import process from "process";
 
 dotenv.config();
 
@@ -10,11 +12,8 @@ const server = http.createServer(app);
 
 app.use(cors());
 app.use(express.json());
-
-app.get("/", (request, response) => {
-  return response.json({ message: "Haloo" });
-});
+app.use("/rooms", roomRoute);
 
 server.listen(process.env.PORT, () => {
-  console.log("server start at server : ", process.env.PORT);
+  console.log("server start at server : http://localhost:", process.env.PORT);
 });
