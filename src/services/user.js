@@ -21,6 +21,14 @@ async function getUser(id) {
   return user;
 }
 
+async function getUserByAuth(payload) {
+  const { email, password } = payload;
+  const user = await prisma.user.findFirst({
+    where: { AND: [{ email, password }] },
+  });
+  return user;
+}
+
 async function updateUser(payload, id) {
   const { name, email, gender, password } = payload;
   const updatedUser = await prisma.user.update({
@@ -42,4 +50,5 @@ export const UserService = {
   getUser,
   updateUser,
   deleteUser,
+  getUserByAuth,
 };
