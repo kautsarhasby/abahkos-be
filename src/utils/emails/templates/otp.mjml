@@ -1,0 +1,50 @@
+<mjml>
+  <mj-head>
+    <mj-style></mj-style>
+    <mj-font
+      name="Poppins"
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    />
+    <mj-attributes>
+      <mj-class name="accent-text-color" color="#2DAA9E" />
+      <mj-class name="accent-border-color" border-color="#2DAA9E" />
+      <mj-class name="accent-background-color" background-color="#66D2CE" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body css-class="">
+    <mj-wrapper>
+      <mj-section>
+        <mj-column>
+          <mj-text font-weight="bold" font-size="24px" font-family="Poppins">
+            abahkos.
+          </mj-text>
+          <mj-divider mj-class="accent-border-color" />
+        </mj-column>
+      </mj-section>
+      <mj-section>
+        <mj-column>
+          <mj-text font-family="Helvetica" font-size="12px">
+            <p text-align="center accent-text-color">Halo saudara {{name}}.</p>
+            <p>
+              Terimakasih sudah mendaftarkan akun kamu, untuk melanjutkan
+              pendaftaran harap verifikasi emailmu terlebih dahulu menggunakan
+              One-Time Password (OTP) berikut ini
+            </p>
+            <p>
+              OTP ini hanya berlau selama 5 menit harap digunakan sebaiknya.
+            </p>
+          </mj-text>
+          <mj-text align="center" font-size="24px" font-weight="bold">
+            {{otp}}
+          </mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section>
+        <mj-column>
+          <mj-divider mj-class="accent-border-color" />
+          <mj-text> abahkos@2024 </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+  </mj-body>
+</mjml>

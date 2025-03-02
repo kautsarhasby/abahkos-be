@@ -16,41 +16,59 @@ datasource db {
 
 
 
-  model User {
+model User {
     id Int @id @default(autoincrement())
     email String @unique
     name String
     gender Gender
     password String
+    role Roles @default(user)
     resetPassword Boolean @default(false)
     otp Int?
-    room Room? @relation(fields: [roomId], references: [id])
-    roomId Int? @unique
+    verified Boolean @default(false)
+    boardingPlace BoardingPlace? @relation(fields: [boardingId], references: [id])
+    boardingId Int?
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-  }
+}
 
-  model Room {
+model Room {
     id Int @id @default(autoincrement())
+    boardingPlace BoardingPlace @relation(fields: [boardingId],references: [id])
+    boardingId Int
     roomUuid String @unique @default(uuid())
     roomNumber Int @unique
     floor Int
-    type RoomType
     status Status
     facilities String[]
     price Int
-    user User?
     description String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-  }
-
-enum RoomType {
-  regular
-  large
 }
 
+model BoardingPlace {
+    id Int @id @default(autoincrement())
+    name String
+    phoneNumber Int
+    address String  
+    facilities String[]
+    status StatusBoardingPlace
+    rooms Room[] 
+    User User[]
+}
+
+enum Roles {
+  user
+  admin
+}
+
+
+enum StatusBoardingPlace {
+  full
+  available
+}
 
 
 enum Status {
@@ -58,9 +76,6 @@ enum Status {
   occupied
   available
 }
-
-
-
 
 enum Gender {
   pria
