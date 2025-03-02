@@ -1,4 +1,5 @@
 import { loginSchema, registerSchema } from "../../schema/schema.js";
+import { OtpService } from "../services/otp.js";
 import { UserService } from "../services/user.js";
 
 async function register(req, res) {
@@ -11,9 +12,20 @@ async function register(req, res) {
 
   const user = await UserService.createUser(validated.data);
 
+  if (user.verified) {
+    return res
+      .status(409)
+      .json({ message: "Account already registered", error: validated.error });
+  }
+
+  await OtpService.sendUserOtpVerification(user.name, user.email, user.id);
+
   return res
     .status(200)
-    .json({ message: "Success created account", data: user });
+    .json({
+      message: "Register Success, waiting for OTP verification",
+      data: user,
+    });
 }
 
 async function login(req, res) {
