@@ -2,7 +2,6 @@ import { loginSchema, registerSchema } from "../../schema/schema.js";
 import { AuthServices } from "../services/auth.js";
 import { OtpService } from "../services/otp.js";
 import { UserService } from "../services/user.js";
-import { response } from "express";
 
 async function register(req, res) {
   const payload = await req.body;
