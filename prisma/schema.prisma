@@ -25,6 +25,7 @@ model User {
     role Roles @default(user)
     resetPassword Boolean @default(false)
     otp Int?
+    expiredAt DateTime? @db.Timestamptz()
     verified Boolean @default(false)
     boardingPlace BoardingPlace? @relation(fields: [boardingId], references: [id])
     boardingId Int?

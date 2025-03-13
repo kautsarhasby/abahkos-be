@@ -1,6 +1,8 @@
 import { loginSchema, registerSchema } from "../../schema/schema.js";
+import { AuthServices } from "../services/auth.js";
 import { OtpService } from "../services/otp.js";
 import { UserService } from "../services/user.js";
+import { response } from "express";
 
 async function register(req, res) {
   const payload = await req.body;
@@ -20,12 +22,10 @@ async function register(req, res) {
 
   await OtpService.sendUserOtpVerification(user.name, user.email, user.id);
 
-  return res
-    .status(200)
-    .json({
-      message: "Register Success, waiting for OTP verification",
-      data: user,
-    });
+  return res.status(200).json({
+    message: "Register Success, waiting for OTP verification",
+    data: user,
+  });
 }
 
 async function login(req, res) {
@@ -41,10 +41,42 @@ async function login(req, res) {
     return res.status(404).json({ message: "Wrong Password or Email" });
   }
 
+  const token = await AuthServices.generateToken(user.id);
+
+  // res as Response
+  res.set("authorized", token);
+
   return res.status(200).json({ message: "Success login account", data: user });
+}
+
+async function otpVerification(req, res) {
+  const { otp, email } = await req.body;
+
+  const otpPayload = await OtpService.verifyOTP({ otp, email });
+
+  if (otpPayload.status === 422) {
+    return res.status(422).json({ message: "OTP expired, please re-send" });
+  }
+  if (otpPayload.status === 401) {
+    return res.status(401).json({ message: "Wrong OTP" });
+  }
+
+  return res.status(200).json({ message: "otp verified", data: otpPayload });
+}
+
+async function resendOTP(req, res) {
+  const { name, email, id } = await req.body;
+
+  await OtpService.sendUserOtpVerification(name, email, id);
+
+  return res.status(200).json({
+    message: "Resend OTP Success, please check your email",
+  });
 }
 
 export const AuthController = {
   register,
   login,
+  otpVerification,
+  resendOTP,
 };

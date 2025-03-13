@@ -1,6 +1,7 @@
 import process from "process";
 import { client, createEmailTemplate } from "./mail.js";
 import dotenv from "dotenv";
+import { prisma } from "../../../db/prisma-client.js";
 
 dotenv.config();
 
@@ -15,9 +16,8 @@ export async function sendOtpEmail({ otp, name, email }) {
       subject: "OTP Verification",
       html: parsedEmailTemplate,
     });
-
-    console.log("suces");
   } catch (error) {
-    console.log("gagal mengirim email", error);
+    console.log("Failed to send OTP", error);
+    await prisma.user.delete({ where: { email } });
   }
 }
